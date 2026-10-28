@@ -68,41 +68,64 @@ public class studentAssignmentManager {
                 
                 case 3:
                     // creates an instance of the assignment class and adds it to the attribute moduleAssignments which is a list that contains all of the assignments for that module
-                    System.out.println("Do you want to add an assignment to an existing module? (yes/no)");
-                    String answer = scanner.nextLine();
-                    if (answer.equalsIgnoreCase("yes")){
-                        if (modulesList.isEmpty()){
-                        System.out.println("There are no modules to add an assignment to, please add a module first");
-                        } else {
-                            // displays all the modules the user can choose and allows them to select one (regarding that the user selects a module number that exists) 
-                            System.out.println("Please select a module to add an assignment to:");
-                            for (int i = 0; i< modulesList.size(); i++){
-                                Module theModule = modulesList.get(i);
-                                System.out.println((i+1) + ". " + theModule.getModuleName() + " (" + theModule.getModuleCode() + ")");
-                            }
-                            int choose = scanner.nextInt();
-                            scanner.nextLine();
-                            while (choose <= 0 || choose > modulesList.size()){
-                                System.out.println("Please choose a valid module number");
-                                choose = scanner.nextInt();
-                                scanner.nextLine();
-                            }
-                            Module chosenModule = modulesList.get(choose);
-                            System.out.println("Enter your assignment title: ");
-                            String theTitle = scanner.nextLine();
-                            System.out.println("Enter the assignment deadline in the format dd/mm/yyyy : ");
-                            String theDeadline = scanner.nextLine();
-                            System.out.println("Enter the priority");
-                            String thePriority = scanner.nextLine();
-                            String theStatus = "not started";
-                            Assignment newAssignment = new Assignment(theTitle, theDeadline, thePriority, theStatus);
-                            chosenModule.addAssignment(newAssignment);
+                    if (modulesList.isEmpty()){
+                    System.out.println("There are no modules to add an assignment to, please add a module first");
+                    } else {
+                        // displays all the modules the user can choose and allows them to select one (regarding that the user selects a module number that exists) 
+                        System.out.println("Please select a module to add an assignment to:");
+                        for (int i = 0; i< modulesList.size(); i++){
+                            Module theModule = modulesList.get(i);
+                            System.out.println((i+1) + ". " + theModule.getModuleName() + " (" + theModule.getModuleCode() + ")");
                         }
-                    }  
+
+                        int choose = scanner.nextInt();
+                        scanner.nextLine();
+                        // ensures the user chooses a valid number
+                        while (choose <= 0 || choose > modulesList.size()){
+                            System.out.println("Please choose a valid module number");
+                            choose = scanner.nextInt();
+                            scanner.nextLine();
+                        }
+
+                        Module chosenModule = modulesList.get(choose-1);
+                        System.out.println("Enter your assignment title: ");
+                        String theTitle = scanner.nextLine();
+                        System.out.println("Enter the assignment deadline in the format dd/mm/yyyy : ");
+                        String theDeadline = scanner.nextLine();
+                        System.out.println("Enter the priority");
+                        String thePriority = scanner.nextLine();
+                        String theStatus = "not started";
+                        // creates an assignment object and adds it to the chosen module's assignment list
+                        Assignment newAssignment = new Assignment(theTitle, theDeadline, thePriority, theStatus);
+                        chosenModule.addAssignment(newAssignment);
+                    }
+
                     break;
 
                 case 4:
                     // displays all the assignments in a chosen module
+                    if (modulesList.isEmpty()){
+                    System.out.println("There are no modules to view assignments for, please add a module first");
+                    } else {
+                        // displays all the modules the user can choose and allows them to select one (regarding that the user selects a module number that exists) 
+                        System.out.println("Please select a module to view it's assignments:");
+                        for (int i = 0; i< modulesList.size(); i++){
+                            Module theModule = modulesList.get(i);
+                            System.out.println((i+1) + ". " + theModule.getModuleName() + " (" + theModule.getModuleCode() + ")");
+                        }
+
+                        int choose = scanner.nextInt();
+                        scanner.nextLine();
+                        // ensures the user chooses a valid number
+                        while (choose <= 0 || choose > modulesList.size()){
+                            System.out.println("Please choose a valid module number");
+                            choose = scanner.nextInt();
+                            scanner.nextLine();
+                        }
+                        Module chosenModule = modulesList.get(choose-1);
+                        chosenModule.displayAssignments();
+                    }
+
                     break;
                 case 5:
                     break;

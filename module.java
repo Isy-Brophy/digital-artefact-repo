@@ -27,6 +27,20 @@ public class Module {
         moduleAssignments.add(theAssignment);
     }
 
+    public void displayAssignments(){
+        if (moduleAssignments.isEmpty()){
+            System.out.println("No assignments have been added yet");
+        } else {
+            for (int i = 0; i < moduleAssignments.size(); i++){
+                Assignment theAssignment = moduleAssignments.get(i);
+                System.out.println((i+1) + ". "+ theAssignment.getTitle() + ": ");
+                System.out.println("   Deadline: "+ theAssignment.getDeadline());
+                System.out.println("   Priority: " + theAssignment.getPriority());
+                System.out.println("   Status: " + theAssignment.getStatus());
+
+            }
+        }
+    }
 }
 
 
