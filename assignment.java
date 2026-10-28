@@ -10,15 +10,19 @@ class Assignment{
         this.priority = priority; 
         this.status = status;
     }
+    
     public String getTitle(){
         return title;
     }
+
     public String getDeadline(){
         return deadline;
     }
+
     public String getPriority(){
         return priority;
     }
+    
     public String getStatus(){
         return status;
     }
