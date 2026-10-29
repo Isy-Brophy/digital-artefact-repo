@@ -22,15 +22,15 @@ public class Module {
     public ArrayList<Assignment> getModuleAssignments(){
         return moduleAssignments;
     }
-    
+
 
     public void addAssignment(Assignment theAssignment){
         moduleAssignments.add(theAssignment);
     }
 
-    public void displayAssignments(){
+    public void displayAssignments(){ // prints all of the assignments in the class
         if (moduleAssignments.isEmpty()){
-            System.out.println("No assignments have been added yet");
+            System.out.println("No assignments have been added");
         } else {
             for (int i = 0; i < moduleAssignments.size(); i++){
                 Assignment theAssignment = moduleAssignments.get(i);

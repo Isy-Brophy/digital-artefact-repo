@@ -23,9 +23,8 @@ public class studentAssignmentManager {
             System.out.println("4. View all assignments in a module");
             System.out.println("5. View all assignments");
             System.out.println("6. Update an assignment status");
-            System.out.println("7. View assignment statistics");
-            System.out.println("8. View current assignments");
-            System.out.println("9. Exit");
+            System.out.println("7. View current assignments");
+            System.out.println("8. Exit");
 
             //takles in the users input
             int input = scanner.nextInt();
@@ -43,7 +42,7 @@ public class studentAssignmentManager {
             // handles the user choosing an option 
             switch(input)
             {
-                case 1:
+                case 1: // allows the user to add a new module 
                     // creates an instance of the module class and adds it to the moduleList
                     System.out.println("Please enter the module name: ");
                     String moduleName = scanner.nextLine();
@@ -53,7 +52,7 @@ public class studentAssignmentManager {
                     modulesList.add(newModule);
                     break;
 
-                case 2:
+                case 2: // displays all modules
                     // checks if the moduleList is empty 
                     if (modulesList.isEmpty()){
                         System.out.println("No modules have been added yet");
@@ -66,7 +65,7 @@ public class studentAssignmentManager {
                     }
                     break;
                 
-                case 3:
+                case 3: // adds a new assignment to a module
                     // creates an instance of the assignment class and adds it to the attribute moduleAssignments which is a list that contains all of the assignments for that module
                     if (modulesList.isEmpty()){
                     System.out.println("There are no modules to add an assignment to, please add a module first");
@@ -102,8 +101,7 @@ public class studentAssignmentManager {
 
                     break;
 
-                case 4:
-                    // displays all the assignments in a chosen module
+                case 4: // displays all the assignments in a chosen module
                     if (modulesList.isEmpty()){
                     System.out.println("There are no modules to view assignments for, please add a module first");
                     } else {
@@ -125,19 +123,26 @@ public class studentAssignmentManager {
                         Module chosenModule = modulesList.get(choose-1);
                         chosenModule.displayAssignments();
                     }
+                    break;
 
+                case 5: // displays all of the assignments in all modules
+                    if (modulesList.isEmpty() ){
+                        System.out.println("You don't have any modules or assignments, please add a module first and add your assignments");
+                    } else {
+                        for (int i = 0; i< modulesList.size(); i++){
+                            Module theModule = modulesList.get(i);
+                            System.out.println("Module: " + theModule.getModuleName() + " (" + theModule.getModuleCode() + ")");
+                            theModule.displayAssignments();
+                        }
+                    }
                     break;
-                case 5:
-                    // displays all of the assignments in all modules
-                    break;
-                case 6:
-                    //updates the status of a chosen assignment 
+
+                case 6: // updates the status of a chosen assignment 
                     System.out.println("Choose the module that contains the assignment you want to update");
                     if (modulesList.isEmpty()){
                     System.out.println("There are no modules to view assignments for, please add a module first");
                     } else {
                         // displays all the modules the user can choose and allows them to select one (regarding that the user selects a module number that exists) 
-                        System.out.println("Please select a module to view it's assignments:");
                         for (int i = 0; i< modulesList.size(); i++){
                             Module theModule = modulesList.get(i);
                             System.out.println((i+1) + ". " + theModule.getModuleName() + " (" + theModule.getModuleCode() + ")");
@@ -166,16 +171,13 @@ public class studentAssignmentManager {
                         System.out.println("What would you like to change the status to?");
                         String newStatus = scanner.nextLine();
                         chosenAssignment.setStatus(newStatus);
-
                     }
-
-
                     break;  
+
+
                 case 7:
                     break;
-                case 8:
-                    break;
-                case 9:
+                case 8: // close the program
                     System.out.println("Shutting down the program, goodbye");
                     run = false;
                     break;
