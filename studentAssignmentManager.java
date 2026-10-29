@@ -128,8 +128,48 @@ public class studentAssignmentManager {
 
                     break;
                 case 5:
+                    // displays all of the assignments in all modules
                     break;
                 case 6:
+                    //updates the status of a chosen assignment 
+                    System.out.println("Choose the module that contains the assignment you want to update");
+                    if (modulesList.isEmpty()){
+                    System.out.println("There are no modules to view assignments for, please add a module first");
+                    } else {
+                        // displays all the modules the user can choose and allows them to select one (regarding that the user selects a module number that exists) 
+                        System.out.println("Please select a module to view it's assignments:");
+                        for (int i = 0; i< modulesList.size(); i++){
+                            Module theModule = modulesList.get(i);
+                            System.out.println((i+1) + ". " + theModule.getModuleName() + " (" + theModule.getModuleCode() + ")");
+                        }
+                        int choose = scanner.nextInt();
+                        scanner.nextLine();
+                        // ensures the user chooses a valid number
+                        while (choose <= 0 || choose > modulesList.size()){
+                            System.out.println("Please choose a valid module number");
+                            choose = scanner.nextInt();
+                            scanner.nextLine();
+                        }
+                        Module chosenModule = modulesList.get(choose-1);
+                        System.out.println("Select an assignment that you want to oupdate the status of");
+                        // prints out all the assignments if there are any
+                        chosenModule.displayAssignments();
+                        int num = scanner.nextInt();
+                        scanner.nextLine();
+                        // ensures the user chooses a valid number
+                        while (choose <= 0 || num > (chosenModule.getModuleAssignments().size())){
+                            System.out.println("Please choose a valid module number");
+                            choose = scanner.nextInt();
+                            scanner.nextLine();
+                        }
+                        Assignment chosenAssignment = chosenModule.getModuleAssignments().get(num-1);
+                        System.out.println("What would you like to change the status to?");
+                        String newStatus = scanner.nextLine();
+                        chosenAssignment.setStatus(newStatus);
+
+                    }
+
+
                     break;  
                 case 7:
                     break;

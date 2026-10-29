@@ -22,6 +22,7 @@ public class Module {
     public ArrayList<Assignment> getModuleAssignments(){
         return moduleAssignments;
     }
+    
 
     public void addAssignment(Assignment theAssignment){
         moduleAssignments.add(theAssignment);

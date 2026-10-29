@@ -26,4 +26,8 @@ class Assignment{
     public String getStatus(){
         return status;
     }
+
+    public void setStatus(String newStatus){
+        this.status = newStatus;
+    }
 }
