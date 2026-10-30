@@ -161,21 +161,29 @@ public class studentAssignmentManager {
                         chosenModule.displayAssignments();
                         int num = scanner.nextInt();
                         scanner.nextLine();
+
                         // ensures the user chooses a valid number
                         while (choose <= 0 || num > (chosenModule.getModuleAssignments().size())){
                             System.out.println("Please choose a valid module number");
                             choose = scanner.nextInt();
                             scanner.nextLine();
                         }
+
                         Assignment chosenAssignment = chosenModule.getModuleAssignments().get(num-1);
-                        System.out.println("What would you like to change the status to?");
+                        System.out.println("What would you like to change the status to? in progress/needs review/need assistance/completed");
                         String newStatus = scanner.nextLine();
-                        chosenAssignment.setStatus(newStatus);
+                        
+                        // ensures that the user chooses a valid status
+                        while (chosenAssignment.setStatus(newStatus)!= true){
+                            System.out.println("Please choose a valid status? in progress/needs review/need assistance/completed");
+                            newStatus = scanner.nextLine();
+                        }
+                        
                     }
                     break;  
 
 
-                case 7:
+                case 7: // view all assignments that have not yet been completed/ are before their deadline
                     break;
                 case 8: // close the program
                     System.out.println("Shutting down the program, goodbye");
