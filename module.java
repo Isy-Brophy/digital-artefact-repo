@@ -42,6 +42,24 @@ public class Module {
             }
         }
     }
+
+    public void displayNotCompletedAssignments(){
+        if (moduleAssignments.isEmpty()){
+            System.out.println("No assignments have been added");
+        } else {
+            for (int i = 0; i < moduleAssignments.size(); i++){
+                moduleAssignments.get(i).setCompleted();
+                Assignment theAssignment = moduleAssignments.get(i);
+                if (theAssignment.getCompleted() == false && theAssignment.getStatus().equals("missed deadline")){
+                    System.out.println((i+1) + ". "+ theAssignment.getTitle() + ": ");
+                    System.out.println("   Deadline: "+ theAssignment.getDeadline());
+                    System.out.println("   Priority: " + theAssignment.getPriority());
+                    System.out.println("   Status: " + theAssignment.getStatus());
+                }
+            }
+    
+        }
+    }
 }
 
 

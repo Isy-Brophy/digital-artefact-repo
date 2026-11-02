@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 class Assignment{
     String title;
     String deadline;
@@ -29,8 +31,12 @@ class Assignment{
         return status;
     }
 
+    public Boolean getCompleted(){
+        return completed;
+    }
+
     public boolean setStatus(String newStatus){
-        if (newStatus.equalsIgnoreCase("in progress")|| newStatus.equalsIgnoreCase("needs review") || newStatus.equalsIgnoreCase("need assistance") || newStatus.equalsIgnoreCase("completed") ){
+        if (newStatus.equalsIgnoreCase("in progress")|| newStatus.equalsIgnoreCase("needs review") || newStatus.equalsIgnoreCase("need assistance") || newStatus.equalsIgnoreCase("completed") || newStatus.equalsIgnoreCase("missed deadline")){
              this.status = newStatus;
              return true;
         } else{
@@ -39,7 +45,18 @@ class Assignment{
     }
 
     public void setCompleted(){
-        //if (this.status.equalsIgnoreCase("completed") ||)
+        LocalDate currentDate = LocalDate.now();
+        LocalDate deadlineDate = LocalDate.parse(this.deadline);
+        if (this.status.equalsIgnoreCase("completed")){
+            this.completed = true;
+        } else if (currentDate.isAfter(deadlineDate)){
+            this.status = "missed deadline";
+            this.completed = true;
+        } else {
+            this.completed = false; 
+
+
+        }
     }
 
     
