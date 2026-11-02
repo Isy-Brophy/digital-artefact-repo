@@ -1,9 +1,31 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class studentAssignmentManager {
 
-    
+
+    public static Boolean isDateValid(String unvalidatedDate){ //validate that a date inout is in the correct format and isn't in the past
+        String dateFormat = "dd/MM/yyyy"; // sets the allowed format 
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(dateFormat);
+        LocalDate currentDate = LocalDate.now();
+
+        try{ // allows for the user to enter a date that could cause an error ut insteda of crashing a program, it handles the error and allows it to continue
+            LocalDate date = LocalDate.parse(unvalidatedDate, dateFormatter);
+            if (date.isBefore(currentDate)){
+                System.out.println("The date cannot be in the past, enter the assignment deadline in the format dd/mm/yyyy ");
+                return false;
+            } else {
+                return true;
+            }
+        } catch (Exception e){ // only trigger when its in the wrong format 
+            System.out.println("Invalid date format, enter the assignment deadline in the format dd/mm/yyyy");
+            return false;
+        }
+
+    }
+
 
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
@@ -35,7 +57,6 @@ public class studentAssignmentManager {
                 System.out.println("Please enter a number between 1-9");
                 input = scanner.nextInt();
                 scanner.nextLine();
-
             }
 
             
@@ -90,7 +111,13 @@ public class studentAssignmentManager {
                         System.out.println("Enter your assignment title: ");
                         String theTitle = scanner.nextLine();
                         System.out.println("Enter the assignment deadline in the format dd/mm/yyyy : ");
-                        String theDeadline = scanner.nextLine();
+                        String theDeadline;
+                        do{ 
+                            theDeadline = scanner.nextLine();
+                        } 
+                        while (isDateValid(theDeadline)!= true);
+                        
+                        
                         System.out.println("Enter the priority");
                         String thePriority = scanner.nextLine();
                         String theStatus = "not started";
