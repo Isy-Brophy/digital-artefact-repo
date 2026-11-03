@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 class Assignment{
     String title;
@@ -45,8 +46,10 @@ class Assignment{
     }
 
     public void setCompleted(){
+        String dateFormat = "dd/MM/yyyy"; // sets the allowed format 
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(dateFormat);
         LocalDate currentDate = LocalDate.now();
-        LocalDate deadlineDate = LocalDate.parse(this.deadline);
+        LocalDate deadlineDate = LocalDate.parse(this.deadline, dateFormatter);
         if (this.status.equalsIgnoreCase("completed")){
             this.completed = true;
         } else if (currentDate.isAfter(deadlineDate)){

@@ -71,6 +71,94 @@ public class studentAssignmentManager {
 
     }
 
+    public static void addNewModule(Scanner scanner, ArrayList<Module> modulesList){
+        // creates an instance of the module class and adds it to the moduleList
+        System.out.println("Please enter the module name: ");
+        String moduleName = scanner.nextLine();
+        System.out.println("Please enter the module code: ");
+        String moduleCode = scanner.nextLine();
+        Module newModule = new Module(moduleName, moduleCode);
+        modulesList.add(newModule);
+    }
+    
+    public static void addNewAssignment(Scanner scanner, ArrayList<Module> modulesList){
+        // creates an instance of the assignment class and adds it to the attribute moduleAssignments which is a list that contains all of the assignments for that module
+        Module chosenModule = selectModule(modulesList, scanner);
+        if (chosenModule != null){
+            System.out.println("Enter your assignment title: ");
+            String theTitle = scanner.nextLine();
+            System.out.println("Enter the assignment deadline in the format dd/mm/yyyy : ");
+            String theDeadline;
+            do{ 
+                theDeadline = scanner.nextLine();
+            } 
+            while (isDateValid(theDeadline)!= true);
+            
+            System.out.println("Enter the priority");
+            String thePriority = scanner.nextLine();
+            String theStatus = "not started";
+            // creates an assignment object and adds it to the chosen module's assignment list
+            Assignment newAssignment = new Assignment(theTitle, theDeadline, thePriority, theStatus);
+            chosenModule.addAssignment(newAssignment);
+        }
+    } 
+
+    public static void displayEverySingleAssignment(Scanner scanner, ArrayList<Module> modulesList){
+        if (modulesList.isEmpty() ){
+            System.out.println("You don't have any modules or assignments, please add a module first and add your assignments");
+        } else {
+            for (int i = 0; i< modulesList.size(); i++){
+                Module theModule = modulesList.get(i);
+                System.out.println("Module: " + theModule.getModuleName() + " (" + theModule.getModuleCode() + ")");
+                theModule.displayAssignments();
+            }
+        }
+    }
+
+    public static void updateStatus(Scanner scanner, ArrayList<Module> modulesList ){
+        System.out.println("Choose the module that contains the assignment you want to update");
+        // allows the user to choose a module
+        Module chosenModule = selectModule(modulesList, scanner);
+        
+        if (chosenModule != null){
+            System.out.println("Select an assignment that you want to oupdate the status of");
+
+            // allows the user to choose an assignment in the chosen module
+            Assignment chosenAssignment = selectAssignment(chosenModule, scanner);
+
+            System.out.println("What would you like to change the status to? in progress/needs review/need assistance/completed");
+            String newStatus = scanner.nextLine();
+            
+            // ensures that the user chooses a valid status
+            while (chosenAssignment.setStatus(newStatus)!= true){
+                System.out.println("Please choose a valid status? in progress/needs review/need assistance/completed");
+                newStatus = scanner.nextLine();
+            }
+            
+        }
+    }
+    
+    public static boolean isAssignments(Module theModule){
+        return !theModule.getModuleAssignments().isEmpty(); 
+    }
+    
+    public static void viewUncompletedAssigments(Scanner scanner,ArrayList<Module> modulesList){
+        if (modulesList.isEmpty() ){
+            System.out.println("You don't have any modules and assignments, please add a module first and add your assignments");
+        } else {
+            for (int i = 0; i< modulesList.size(); i++){
+                Module theModule = modulesList.get(i);
+                if (isAssignments(theModule)){
+                    System.out.println("Module: " + theModule.getModuleName() + " (" + theModule.getModuleCode() + ")");
+                    theModule.displayNotCompletedAssignments();
+                } else {
+                    System.out.println("You have no assignments");
+                }
+
+            }
+        }
+    }
+
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
         ArrayList<Module> modulesList = new ArrayList<>();
@@ -111,12 +199,7 @@ public class studentAssignmentManager {
             {
                 case 1: // allows the user to add a new module 
                     // creates an instance of the module class and adds it to the moduleList
-                    System.out.println("Please enter the module name: ");
-                    String moduleName = scanner.nextLine();
-                    System.out.println("Please enter the module code: ");
-                    String moduleCode = scanner.nextLine();
-                    Module newModule = new Module(moduleName, moduleCode);
-                    modulesList.add(newModule);
+                    addNewModule(scanner, modulesList);
                     break;
 
                 case 2: // displays all modules
@@ -128,83 +211,28 @@ public class studentAssignmentManager {
                     break;
                 
                 case 3: // adds a new assignment to a module
-                    // creates an instance of the assignment class and adds it to the attribute moduleAssignments which is a list that contains all of the assignments for that module
-                    Module chosenModule = selectModule(modulesList, scanner);
-                    if (chosenModule != null){
-                            System.out.println("Enter your assignment title: ");
-                            String theTitle = scanner.nextLine();
-                            System.out.println("Enter the assignment deadline in the format dd/mm/yyyy : ");
-                            String theDeadline;
-                            do{ 
-                                theDeadline = scanner.nextLine();
-                            } 
-                            while (isDateValid(theDeadline)!= true);
-                            
-                            System.out.println("Enter the priority");
-                            String thePriority = scanner.nextLine();
-                            String theStatus = "not started";
-                            // creates an assignment object and adds it to the chosen module's assignment list
-                            Assignment newAssignment = new Assignment(theTitle, theDeadline, thePriority, theStatus);
-                            chosenModule.addAssignment(newAssignment);
-                    }
-
+                    addNewAssignment(scanner, modulesList);
                     break;
 
                 case 4: // displays all the assignments in a chosen module
-                    chosenModule = selectModule(modulesList, scanner);
+                    Module chosenModule = selectModule(modulesList, scanner);
                     if (chosenModule != null){
                         chosenModule.displayAssignments();
                     }
                     break;
 
                 case 5: // displays all of the assignments in all modules
-                    if (modulesList.isEmpty() ){
-                        System.out.println("You don't have any modules or assignments, please add a module first and add your assignments");
-                    } else {
-                        for (int i = 0; i< modulesList.size(); i++){
-                            Module theModule = modulesList.get(i);
-                            System.out.println("Module: " + theModule.getModuleName() + " (" + theModule.getModuleCode() + ")");
-                            theModule.displayAssignments();
-                        }
-                    }
+                    displayEverySingleAssignment(scanner, modulesList);
                     break;
 
                 case 6: // updates the status of a chosen assignment 
-                    System.out.println("Choose the module that contains the assignment you want to update");
-                    // allows the user to choose a module
-                    chosenModule = selectModule(modulesList, scanner);
-                    
-                    if (chosenModule != null){
-                        System.out.println("Select an assignment that you want to oupdate the status of");
-
-                        // allows the user to choose an assignment in the chosen module
-                        Assignment chosenAssignment = selectAssignment(chosenModule, scanner);
-
-                        System.out.println("What would you like to change the status to? in progress/needs review/need assistance/completed");
-                        String newStatus = scanner.nextLine();
-                        
-                        // ensures that the user chooses a valid status
-                        while (chosenAssignment.setStatus(newStatus)!= true){
-                            System.out.println("Please choose a valid status? in progress/needs review/need assistance/completed");
-                            newStatus = scanner.nextLine();
-                        }
-                        
-                    }
+                    updateStatus(scanner, modulesList);
                     break;  
-
-
                 
                 case 7: // view all assignments that have not yet been completed/ are before their deadline
-                    if (modulesList.isEmpty() ){
-                        System.out.println("You don't have any modules or assignments, please add a module first and add your assignments");
-                    } else {
-                        for (int i = 0; i< modulesList.size(); i++){
-                            Module theModule = modulesList.get(i);
-                            System.out.println("Module: " + theModule.getModuleName() + " (" + theModule.getModuleCode() + ")");
-                            theModule.displayAssignments();
-                        }
-                    }
+                    viewUncompletedAssigments(scanner, modulesList);
                     break;
+                
                 case 8: // close the program
                     System.out.println("Shutting down the program, goodbye");
                     run = false;
