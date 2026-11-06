@@ -26,7 +26,7 @@ public class studentAssignmentManager {
 
     }
 
-    public static void displayAllModules(ArrayList<Module> modulesList){
+    public static void displayAllModules(ArrayList<Module> modulesList){ // prints out all the modules and their module code
         for (int i = 0; i < modulesList.size(); i++){
             Module theModule = modulesList.get(i);
             System.out.println((i+1) + ". " + theModule.getModuleName() + " (" + theModule.getModuleCode() + ")");
@@ -34,41 +34,64 @@ public class studentAssignmentManager {
         
     }
 
-    public static Module selectModule(ArrayList<Module> modulesList, Scanner scanner){
+    public static Module selectModule(ArrayList<Module> modulesList, Scanner scanner){ // allows the user to select a module
         if (modulesList.isEmpty()){
             System.out.println("There are no modules to select, please add one first");
             return null;
         } else {
-            System.out.println("Select a module");
-            displayAllModules(modulesList);
-            int choose = scanner.nextInt();
-            scanner.nextLine();
-            // ensures the user chooses a valid number
-            while (choose <= 0 || choose > modulesList.size()){
-                System.out.println("Please choose a valid module number");
-                choose = scanner.nextInt();
-                scanner.nextLine();
-            }
+            Module chosenModule = null;
+            while (chosenModule == null){
+                try{ // allows for the code to handle the user entering a non integer 
+                    System.out.println("Select a module");
+                    displayAllModules(modulesList);
+                    int choose = scanner.nextInt();
+                    scanner.nextLine();
+                    // ensures the user chooses a valid number
+                    while (choose <= 0 || choose > modulesList.size()){
+                        System.out.println("Please choose a valid module number");
+                        choose = scanner.nextInt();
+                        scanner.nextLine();
+                    }
 
-            return modulesList.get(choose-1);
+                    chosenModule = modulesList.get(choose-1);
+                } catch (Exception e){
+                    System.out.println("Please enter a valid number");
+                    scanner.nextLine();
+                }
+            }
+            return chosenModule;
+
         }
     }
    
-    public static Assignment selectAssignment(Module chosenModule, Scanner scanner){
-        chosenModule.displayAssignments();
-        System.out.println("select an assignment");
-        int num = scanner.nextInt();
-        scanner.nextLine();
+    public static Assignment selectAssignment(Module chosenModule, Scanner scanner){ // allows the user to select an assignment in a module
+        if (chosenModule.getModuleAssignments().isEmpty()){
+            System.out.println("There are no assignments in this module");
+            return null;
+        } else{
 
-         // ensures the user chooses a valid number
-        while (num <= 0 || num > (chosenModule.getModuleAssignments().size())){
-            System.out.println("Please choose a valid module number");
-            num = scanner.nextInt();
-            scanner.nextLine();
+            chosenModule.displayAssignments();
+            Assignment chosenAssignment = null;
+            while (chosenAssignment == null){
+                try { // allows for the code to handle the user entering a upon integer
+                    System.out.println("select an assignment");
+                    int num = scanner.nextInt();
+                    scanner.nextLine();
+
+                    // ensures the user chooses a valid number
+                    while (num <= 0 || num > (chosenModule.getModuleAssignments().size())){
+                        System.out.println("Please choose a valid module number");
+                        num = scanner.nextInt();
+                        scanner.nextLine();
+                    }
+                    chosenAssignment = chosenModule.getModuleAssignments().get(num-1);
+                } catch (Exception e) {
+                    System.out.println("Please enter a valid number");
+                    scanner.nextLine();
+                }
+            }
+            return chosenAssignment;
         }
-
-        return chosenModule.getModuleAssignments().get(num-1);
-
     }
 
     public static void addNewModule(Scanner scanner, ArrayList<Module> modulesList){
@@ -121,18 +144,19 @@ public class studentAssignmentManager {
         Module chosenModule = selectModule(modulesList, scanner);
         
         if (chosenModule != null){
-            System.out.println("Select an assignment that you want to oupdate the status of");
-
             // allows the user to choose an assignment in the chosen module
             Assignment chosenAssignment = selectAssignment(chosenModule, scanner);
+            if (chosenAssignment != null){
+                System.out.println("Select an assignment that you want to oupdate the status of");
 
-            System.out.println("What would you like to change the status to? in progress/needs review/need assistance/completed");
-            String newStatus = scanner.nextLine();
-            
-            // ensures that the user chooses a valid status
-            while (chosenAssignment.setStatus(newStatus)!= true){
-                System.out.println("Please choose a valid status? in progress/needs review/need assistance/completed");
-                newStatus = scanner.nextLine();
+                System.out.println("What would you like to change the status to? in progress/needs review/need assistance/completed");
+                String newStatus = scanner.nextLine();
+                
+                // ensures that the user chooses a valid status
+                while (chosenAssignment.setStatus(newStatus)!= true){
+                    System.out.println("Please choose a valid status? in progress/needs review/need assistance/completed");
+                    newStatus = scanner.nextLine();
+                }
             }
             
         }
@@ -168,7 +192,7 @@ public class studentAssignmentManager {
         // main menu loop
         while (run== true){
             
-
+            try { // alows for the code to handle non integer inputs
             System.out.println("=================================");
             System.out.println(" STUDENT ASSIGNMENT MANAGER");
             System.out.println("=================================");
@@ -186,9 +210,9 @@ public class studentAssignmentManager {
             int input = scanner.nextInt();
             scanner.nextLine();
 
-            //checks if the users input is valid - it must be between 1 and 9 
-             while (input<=0 || input >= 10){
-                System.out.println("Please enter a number between 1-9");
+            //checks if the users input is valid - it must be between 1 and 8
+             while (input<=0 || input >= 9){
+                System.out.println("Please enter a number between 1-8");
                 input = scanner.nextInt();
                 scanner.nextLine();
             }
@@ -239,8 +263,10 @@ public class studentAssignmentManager {
                     break;
 
             }
-
-
+            } catch (Exception e){
+                System.out.println("please enter a valid number");
+                scanner.nextLine();
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 import java.util.ArrayList; 
 
-public class Module {
+class Module {
     String moduleName;
     String moduleCode;
     ArrayList<Assignment> moduleAssignments;
